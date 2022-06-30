@@ -1,15 +1,31 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 const AddUser = () => {
+
     const handleAddUser = event =>{
         event.preventDefault();
         const name = event.target.name.value;
         const email = event.target.email.value;
         const user = {name, email};
         console.log(user);
-        event.target.name.value = "";
-        event.target.email.value = "";
+        event.target.reset();
+        // sent data to server side
+        fetch('http://localhost:5000/user', {
+            method: 'POST',
+            headers:{
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(user),
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log('success', data);
+            event.target.reset();
+        })
+
+
     }
+
     return (
         <div>
             <h2>Add User</h2>
